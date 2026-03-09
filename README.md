@@ -6,6 +6,7 @@
 
 Whitelist Isolation · Audit Trail · Zero Dependencies · sudoers Integration
 
+[![CI](https://github.com/yangsjt/openclaw-safe-exec/actions/workflows/ci.yml/badge.svg)](https://github.com/yangsjt/openclaw-safe-exec/actions/workflows/ci.yml)
 [![OpenClaw Plugin](https://img.shields.io/badge/OpenClaw-Plugin-blue)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen)]()

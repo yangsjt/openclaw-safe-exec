@@ -12,6 +12,34 @@
   "peerDependencies": {
     "openclaw": ">=2026.3.0"
   },
+  "files": [
+    "index.js",
+    "src/",
+    "sudoers/",
+    "examples/",
+    "openclaw.plugin.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yangsjt/openclaw-safe-exec.git"
+  },
+  "homepage": "https://github.com/yangsjt/openclaw-safe-exec#readme",
+  "bugs": {
+    "url": "https://github.com/yangsjt/openclaw-safe-exec/issues"
+  },
+  "keywords": [
+    "openclaw",
+    "plugin",
+    "sudo",
+    "security",
+    "audit",
+    "permissions",
+    "whitelist"
+  ],
+  "author": "yangsjt",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "license": "MIT",
   "openclaw": {
     "extensions": [
