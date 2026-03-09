@@ -1,0 +1,31 @@
+{
+  "plugins": {
+    "entries": {
+      "safe-exec": {
+        "enabled": true,
+        "config": {
+          "dispatcher": "/path/to/your/dispatcher.sh",
+          "sudoApps": ["webserver", "database"],
+          "auditLog": "~/.openclaw/safe-exec-audit.log",
+          "agents": {
+            "david": {
+              "allow": [
+                "webserver:*",
+                "database:*",
+                "monitoring:status",
+                "backup:status",
+                "backup:list"
+              ]
+            },
+            "bob": {
+              "allow": [
+                "backup:*",
+                "monitoring:*"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

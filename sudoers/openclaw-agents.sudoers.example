@@ -1,0 +1,25 @@
+# OpenClaw Agent NOPASSWD — only via dispatcher script
+# Install: sudo visudo -cf <file> && sudo cp <file> /etc/sudoers.d/openclaw-agents
+#
+# Replace <USERNAME> with your macOS username and <DISPATCHER_PATH> with the
+# absolute path to your dispatcher script.
+#
+# Security: grants NOPASSWD only for specific <DISPATCHER_PATH> <app> <cmd> invocations.
+# The dispatcher resolves symlinks and only sources apps/*.sh scripts,
+# so command injection via app/cmd names is not possible.
+
+# NoMachine management
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> nomachine status
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> nomachine restart
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> nomachine stop
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> nomachine start
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> nomachine disconnect
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> nomachine logs
+
+# Firewall management
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> firewall status
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> firewall setup
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> firewall restore
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> firewall on
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> firewall off
+<USERNAME> ALL=(root) NOPASSWD: <DISPATCHER_PATH> firewall rules

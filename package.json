@@ -1,0 +1,21 @@
+{
+  "name": "safe-exec",
+  "version": "1.0.0",
+  "description": "Per-agent whitelisted system command execution with audit logging",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "debug": "DEBUG=safe-exec node debug/harness.js",
+    "debug:inspect": "DEBUG=safe-exec node --inspect-brk debug/harness.js"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.3.0"
+  },
+  "license": "MIT",
+  "openclaw": {
+    "extensions": [
+      "./index.js"
+    ]
+  }
+}

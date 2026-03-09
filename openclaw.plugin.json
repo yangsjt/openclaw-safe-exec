@@ -1,0 +1,40 @@
+{
+  "id": "safe-exec",
+  "name": "Safe Exec",
+  "description": "Per-agent whitelisted system command execution with audit logging",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+      "dispatcher": {
+        "type": "string",
+        "description": "Absolute path to the command dispatcher script (e.g. tools.sh)"
+      },
+      "sudoApps": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Apps that require sudo to execute",
+        "default": []
+      },
+      "auditLog": {
+        "type": "string",
+        "description": "Path to audit log file"
+      },
+      "agents": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "allow": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Allowed commands in app:cmd or app:* format"
+            }
+          },
+          "required": ["allow"]
+        },
+        "description": "Per-agent command whitelist"
+      }
+    }
+  }
+}
