@@ -1,25 +1,62 @@
+<div align="center">
+
 # openclaw-safe-exec
 
-**Why?** — AI Agents that manage macOS infrastructure need `sudo` for tasks like restarting services or applying configuration changes. Unrestricted root access is unacceptable. This plugin gives each agent exactly the privileges it needs — no more, no less — with every action recorded in an audit trail.
+**Per-agent whitelisted `sudo` execution with three-layer defense-in-depth**
 
-## Three-Layer Defense-in-Depth
+Whitelist Isolation · Audit Trail · Zero Dependencies · sudoers Integration
 
+[![OpenClaw Plugin](https://img.shields.io/badge/OpenClaw-Plugin-blue)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen)]()
+[![Node.js](https://img.shields.io/badge/Node.js-ESM-339933?logo=node.js)]()
+
+</div>
+
+## Why This Plugin?
+
+AI Agents that manage macOS infrastructure need `sudo` for tasks like restarting services or applying configuration changes. Unrestricted root access is unacceptable. This plugin gives each agent exactly the privileges it needs — no more, no less — with every action recorded in an audit trail.
+
+| Capability | OpenClaw Built-in (`exec-approvals`) | **+ safe-exec Plugin** |
+|---|---|---|
+| Binary path restriction | ✅ | ✅ |
+| Per-agent command isolation | ❌ | ✅ |
+| App:command whitelist | ❌ | ✅ |
+| Wildcard patterns (`app:*`) | ❌ | ✅ |
+| Audit trail (ALLOW/DENY/RESULT) | ❌ | ✅ |
+| Dynamic agent ID resolution | ❌ | ✅ |
+| `sudo -n` non-interactive mode | ❌ | ✅ |
+| `execFile` (no shell injection) | ❌ | ✅ |
+| Execution timeout (30s) | ❌ | ✅ |
+| Per-agent tool description | ❌ | ✅ |
+| Unconfigured agents blocked | ❌ | ✅ |
+
+## Architecture
+
+Three independent layers — compromising one does not bypass the others.
+
+```mermaid
+flowchart TB
+    subgraph L3["Layer 3 — OpenClaw Platform"]
+        EA["exec-approvals: binary path restriction"]
+    end
+    subgraph L2["Layer 2 — safe-exec Plugin"]
+        WL["Per-agent whitelist check"]
+        AU["Audit log (ALLOW / DENY)"]
+    end
+    subgraph L1["Layer 1 — OS sudoers"]
+        SD["NOPASSWD: dispatcher app cmd only"]
+    end
+
+    Agent -->|"safe_exec(app, cmd)"| L3
+    L3 --> L2
+    WL -->|DENY| AU
+    WL -->|ALLOW| AU
+    AU -->|ALLOW| L1
+    L1 -->|"execFile (no shell)"| Dispatcher
+    Dispatcher --> Result
+    Result -->|"audit RESULT"| AU
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 3 — OpenClaw Platform (exec-approvals)               │
-│  Binary path restrictions: only tools.sh can be executed    │
-├─────────────────────────────────────────────────────────────┤
-│  Layer 2 — Plugin Whitelist (this plugin)                   │
-│  Per-agent allow list: david → webserver:*, database:*      │
-│                        bob   → backup:*, monitoring:*       │
-├─────────────────────────────────────────────────────────────┤
-│  Layer 1 — OS sudoers (NOPASSWD)                            │
-│  Only allows: /path/to/tools.sh <app> <cmd>                 │
-│  No shell, no arbitrary commands                            │
-└─────────────────────────────────────────────────────────────┘
-```
-
-Each layer is independent — compromising one does not bypass the others.
 
 ## Per-Agent Permission Isolation
 
@@ -67,6 +104,42 @@ Fields: timestamp, agent ID, verdict (ALLOW/DENY/RESULT), command, exit code. En
 
 4. **Restart OpenClaw gateway**
 
+## Configuration
+
+```jsonc
+{
+  "plugins": {
+    "entries": {
+      "safe-exec": {
+        "enabled": true,
+        "config": {
+          "dispatcher": "/path/to/your/dispatcher.sh",
+          "sudoApps": ["webserver", "database"],
+          "auditLog": "~/.openclaw/safe-exec-audit.log",
+          "agents": {
+            "david": {
+              "allow": [
+                "webserver:*",
+                "database:*",
+                "monitoring:status",
+                "backup:status",
+                "backup:list"
+              ]
+            },
+            "bob": {
+              "allow": [
+                "backup:*",
+                "monitoring:*"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 ## Whitelist Format
 
 - `app:cmd` — exact match (e.g. `monitoring:status`)
@@ -92,3 +165,7 @@ npm test
 | `examples/openclaw.json.example` | Sanitized config template |
 | `examples/local.json` | Local machine config (gitignored) |
 | `openclaw.plugin.json` | Plugin manifest (id: `safe-exec`) |
+
+## License
+
+[MIT](LICENSE)
