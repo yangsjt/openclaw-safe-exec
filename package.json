@@ -1,5 +1,5 @@
 {
-  "name": "safe-exec",
+  "name": "openclaw-safe-exec",
   "version": "1.0.0",
   "description": "Per-agent whitelisted system command execution with audit logging",
   "main": "index.js",

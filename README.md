@@ -85,8 +85,8 @@ Fields: timestamp, agent ID, verdict (ALLOW/DENY/RESULT), command, exit code. En
 1. **Install the plugin**
 
    ```bash
-   npm install safe-exec
-   openclaw plugins install safe-exec
+   npm install openclaw-safe-exec
+   openclaw plugins install openclaw-safe-exec
    ```
 
    Or install from source:
