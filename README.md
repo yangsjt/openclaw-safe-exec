@@ -6,6 +6,7 @@
 
 Whitelist Isolation · Audit Trail · Zero Dependencies · sudoers Integration
 
+[![CI](https://github.com/yangsjt/openclaw-safe-exec/actions/workflows/ci.yml/badge.svg)](https://github.com/yangsjt/openclaw-safe-exec/actions/workflows/ci.yml)
 [![OpenClaw Plugin](https://img.shields.io/badge/OpenClaw-Plugin-blue)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen)]()
@@ -81,10 +82,18 @@ Fields: timestamp, agent ID, verdict (ALLOW/DENY/RESULT), command, exit code. En
 
 ## Installation
 
-1. **Clone and install the plugin**
+1. **Install the plugin**
 
    ```bash
-   cd ~/projects/openclaw-safe-exec
+   npm install safe-exec
+   openclaw plugins install safe-exec
+   ```
+
+   Or install from source:
+
+   ```bash
+   git clone https://github.com/yangsjt/openclaw-safe-exec.git
+   cd openclaw-safe-exec
    openclaw plugins install .
    ```
 
